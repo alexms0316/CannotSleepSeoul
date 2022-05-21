@@ -9,24 +9,24 @@ class Hotel(models.Model):
     facilities    = models.CharField(max_length=50)
     service       = models.CharField(max_length=50)
     information   = models.TextField()
-    refund_policy = models.CharField(max_length=50)
-    locations     = models.ForeignKey('Location', on_delete=models.CASCADE)
+    refund_policy = models.CharField(max_length=1000)
+    location      = models.ForeignKey('Location', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'hotels'
 
 class Location(models.Model):
-    city      = models.CharField(max_length=10)
-    gu        = models.CharField(max_length=10)
-    ro        = models.CharField(max_length=20)
-    detail    = models.CharField(max_length=30)
+    city      = models.CharField(max_length=100)
+    gu        = models.CharField(max_length=100)
+    ro        = models.CharField(max_length=1000)
+    detail    = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'locations'
 
 class HotelImage(models.Model):
     image_url = models.CharField(max_length=200)
-    hotels    = models.ForeignKey('Hotel', on_delete=models.CASCADE)
+    hotel     = models.ForeignKey('Hotel', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'hotel_images'
@@ -34,14 +34,15 @@ class HotelImage(models.Model):
 class Room(models.Model):
     available_date_start = models.DateField()
     available_date_end   = models.DateField()
-    hotels               = models.ForeignKey('hotels.Hotel', on_delete=models.CASCADE)
+    hotel                = models.ForeignKey('hotels.Hotel', on_delete=models.CASCADE)
+    room_type            = models.ForeignKey('RoomType', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = 'rooms'
 
 class RoomImage(models.Model):
     image_url = models.CharField(max_length=200)
-    rooms     = models.ForeignKey('hotels.Room', on_delete=models.CASCADE)
+    room      = models.ForeignKey('hotels.Room', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'room_images'
@@ -49,7 +50,6 @@ class RoomImage(models.Model):
 class RoomType(models.Model):
     type        = models.CharField(max_length=30)
     price       = models.DecimalField(max_digits=10, decimal_places=2)
-    rooms       = models.ForeignKey('hotels.Room', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'room_types'

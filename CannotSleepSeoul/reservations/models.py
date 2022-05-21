@@ -4,7 +4,7 @@ from django.db    import models
 from cores.models import TimeStamp
 
 class Reservation(TimeStamp):
-    reservation_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    reservation_code = models.IntegerField()
     check_in         = models.DateField()
     check_out        = models.DateField()
     deleted_at       = models.DateTimeField(null=True)
